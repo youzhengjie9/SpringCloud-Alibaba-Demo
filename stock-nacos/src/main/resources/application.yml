@@ -1,0 +1,35 @@
+server:
+  port: 3301
+# 开启端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+# SpringCloud配置
+spring:
+  application:
+    name: stock-nacos
+  cloud:
+    #nacos配置
+    nacos:
+      #nacos的ip:端口
+      server-addr: 192.168.184.100:7747
+      discovery:
+        # nacos用户名
+        username: nacos
+        # nacos密码
+        password: nacos
+        # nacos命名空间
+        namespace: public
+        # nacos的分组
+        group: DEFAULT_GROUP
+  main:
+    #解决多个feign接口连接相同的微服务则会报错的问题
+    allow-bean-definition-overriding: true
+
+#设置ribbon的超时时间
+ribbon:
+  ReadTimeout: 6000
+  ConnectTimeout: 8000
+
