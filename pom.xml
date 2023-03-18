@@ -11,6 +11,8 @@
     <modules>
         <module>order-nacos</module>
         <module>stock-nacos</module>
+        <module>sentinel-web</module>
+        <module>sentinel-nacos</module>
     </modules>
 
     <properties>

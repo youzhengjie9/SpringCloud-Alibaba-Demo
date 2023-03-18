@@ -5,15 +5,31 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.concurrent.TimeUnit;
 
 @EnableFeignClients //开启openfeign功能
 @SpringBootApplication
 @EnableDiscoveryClient
 public class OrderNacosApplication {
     public static void main(String[] args) {
-        SpringApplication.run(OrderNacosApplication.class,args);
+        ConfigurableApplicationContext applicationContext =
+                SpringApplication.run(OrderNacosApplication.class, args);
+        //动态更新配置
+//        for (;;){
+//            String username = applicationContext.getEnvironment().getProperty("nacosconfig.username");
+//            String age = applicationContext.getEnvironment().getProperty("nacosconfig.age");
+//            System.out.println(username+"======>"+age);
+//            try {
+//                TimeUnit.SECONDS.sleep(1);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+
     }
 
 

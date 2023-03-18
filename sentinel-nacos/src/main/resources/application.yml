@@ -1,0 +1,134 @@
+server:
+  port: 2303
+##################################################################################
+# 注意：整合了Nacos注册中心、配置中心需要把有关于spring.xxx的全部配置放到bootstrap.yml文件中，不然会报错！！！！！
+##################################################################################
+spring:
+  application:
+    name: sentinel-nacos
+  #  main:
+  #    allow-bean-definition-overriding: true    #不然多个feign接口连接相同的微服务则会报错
+  # SpringCloud Alibaba配置
+  cloud:
+    # Nacos配置
+    nacos:
+      # Nacos的ip:端口
+      server-addr: 192.168.184.100:7747
+    # Sentinel配置
+    sentinel:
+      # 取消控制台懒加载（默认sentinel是懒加载）
+      eager: true
+      transport:
+        # Sentinel的控制台地址
+        dashboard: localhost:8200
+        # 指定应用与Sentinel控制台交互的端口，应用本地会起一个该端口占用的HttpServer
+        port: 8719
+      # 配置Sentinel持久化到Nacos的数据源
+      datasource:
+        # 配置 “限流” 数据源。只会加载Sentinel上传到Nacos配置中心的“限流”配置文件
+        flow-rules:
+          # 指定Sentinel持久化到Nacos
+          nacos:
+            # Nacos的ip+端口
+            server-addr: ${spring.cloud.nacos.server-addr}
+            # Nacos帐号
+            username: nacos
+            # Nacos密码
+            password: nacos
+            # Nacos配置中心上的Sentinel“限流”配置文件的全名（data-id）
+            data-id: ${spring.application.name}-flow-rules
+            # Nacos配置中心上的Sentinel“限流”配置文件的命名空间
+            namespace:
+            # Nacos配置中心上的Sentinel“限流”配置文件的分组
+            group-id: DEFAULT_GROUP
+            # Nacos配置中心上的Sentinel“限流”配置文件的文件类型
+            dataType: json
+            # Nacos配置中心上的Sentinel“限流”配置文件的规则类型（flow为限流规则）
+            ruleType: flow
+        # 配置 “降级” 数据源。只会加载Sentinel上传到Nacos配置中心的“降级”配置文件
+        degrade‐rules:
+          # 指定Sentinel持久化到Nacos
+          nacos:
+            # Nacos的ip+端口
+            server-addr: ${spring.cloud.nacos.server-addr}
+            # Nacos帐号
+            username: nacos
+            # Nacos密码
+            password: nacos
+            # Nacos配置中心上的Sentinel“降级”配置文件的全名（data-id）
+            data-id: ${spring.application.name}‐degrade‐rules
+            # Nacos配置中心上的Sentinel“降级”配置文件的命名空间
+            namespace:
+            # Nacos配置中心上的Sentinel“降级”配置文件的分组
+            group-id: DEFAULT_GROUP
+            # Nacos配置中心上的Sentinel“降级”配置文件的文件类型
+            dataType: json
+            # Nacos配置中心上的Sentinel“降级”配置文件的规则类型（degrade为降级规则）
+            ruleType: degrade
+        # 配置 “参数限流” 数据源。只会加载Sentinel上传到Nacos配置中心的“参数限流”配置文件
+        param‐flow‐rules:
+          # 指定Sentinel持久化到Nacos
+          nacos:
+            # Nacos的ip+端口
+            server-addr: ${spring.cloud.nacos.server-addr}
+            # Nacos帐号
+            username: nacos
+            # Nacos密码
+            password: nacos
+            # Nacos配置中心上的Sentinel“参数限流”配置文件的全名（data-id）
+            data-id: ${spring.application.name}‐param‐flow‐rules
+            # Nacos配置中心上的Sentinel“参数限流”配置文件的命名空间
+            namespace:
+            # Nacos配置中心上的Sentinel“参数限流”配置文件的分组
+            group-id: DEFAULT_GROUP
+            # Nacos配置中心上的Sentinel“参数限流”配置文件的文件类型
+            dataType: json
+            # Nacos配置中心上的Sentinel“参数限流”配置文件的规则类型（param_flow为参数限流规则）
+            ruleType: param_flow
+        # 配置 “授权规则” 数据源。只会加载Sentinel上传到Nacos配置中心的“授权规则”配置文件
+        authority‐rules:
+          # 指定Sentinel持久化到Nacos
+          nacos:
+            # Nacos的ip+端口
+            server-addr: ${spring.cloud.nacos.server-addr}
+            # Nacos帐号
+            username: nacos
+            # Nacos密码
+            password: nacos
+            # Nacos配置中心上的Sentinel“授权规则”配置文件的全名（data-id）
+            data-id: ${spring.application.name}‐authority‐rules
+            # Nacos配置中心上的Sentinel“授权规则”配置文件的命名空间
+            namespace:
+            # Nacos配置中心上的Sentinel“授权规则”配置文件的分组
+            group-id: DEFAULT_GROUP
+            # Nacos配置中心上的Sentinel“授权规则”配置文件的文件类型
+            dataType: json
+            # Nacos配置中心上的Sentinel“授权规则”配置文件的规则类型（authority为授权规则）
+            ruleType: authority
+        # 配置 “系统规则” 数据源。只会加载Sentinel上传到Nacos配置中心的“系统规则”配置文件
+        system‐rules:
+          # 指定Sentinel持久化到Nacos
+          nacos:
+            # Nacos的ip+端口
+            server-addr: ${spring.cloud.nacos.server-addr}
+            # Nacos帐号
+            username: nacos
+            # Nacos密码
+            password: nacos
+            # Nacos配置中心上的Sentinel“系统规则”配置文件的全名（data-id）
+            data-id: ${spring.application.name}‐system‐rules
+            # Nacos配置中心上的Sentinel“系统规则”配置文件的命名空间
+            namespace:
+            # Nacos配置中心上的Sentinel“系统规则”配置文件的分组
+            group-id: DEFAULT_GROUP
+            # Nacos配置中心上的Sentinel“系统规则”配置文件的文件类型
+            dataType: json
+            # Nacos配置中心上的Sentinel“系统规则”配置文件的规则类型（system为系统规则）
+            ruleType: system
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
