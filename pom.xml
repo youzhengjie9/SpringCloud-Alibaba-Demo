@@ -13,6 +13,7 @@
         <module>stock-nacos</module>
         <module>sentinel-web</module>
         <module>sentinel-nacos</module>
+        <module>sentinel-gateway</module>
     </modules>
 
     <properties>

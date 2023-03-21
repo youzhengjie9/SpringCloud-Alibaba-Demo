@@ -1,5 +1,32 @@
 server:
   port: 2301
+
+##################################################################################
+# 注意：整合了Nacos注册中心、配置中心需要把有关于spring.xxx的全部配置放到bootstrap.yml文件中，不然会报错！！！！！
+##################################################################################
+# SpringCloud Alibaba配置
+spring:
+  application:
+    name: order-nacos
+  cloud:
+    #nacos配置
+    nacos:
+      #nacos的ip:端口
+      server-addr: 192.168.184.100:7747
+      #nacos注册中心的配置
+      discovery:
+        # nacos用户名
+        username: nacos
+        # nacos密码
+        password: nacos
+        # nacos命名空间
+        namespace:
+        # nacos的分组
+        group: DEFAULT_GROUP
+
+  main:
+    allow-bean-definition-overriding: true    #不然多个feign接口连接相同的微服务则会报错
+
 # 开启端点
 management:
   endpoints:
@@ -7,7 +34,7 @@ management:
       exposure:
         include: "*"
 
-#设置ribbon的超时时间
+#设置openFeign客户端超时时间(OpenFeign默认支持ribbon)
 ribbon:
   # 连接超时时间
   ConnectTimeout: 3000

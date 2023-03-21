@@ -30,6 +30,10 @@ public class SentinelNacosFallback {
         return "throwException-----------Fallback服务降级";
     }
 
+    public static String timeoutFallback(Throwable e){
+        return "timeoutFallback----------Fallback服务降级";
+    }
+
 
 
 }

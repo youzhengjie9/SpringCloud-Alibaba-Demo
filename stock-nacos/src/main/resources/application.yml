@@ -21,7 +21,7 @@ spring:
         # nacos密码
         password: nacos
         # nacos命名空间
-        namespace: public
+        namespace:
         # nacos的分组
         group: DEFAULT_GROUP
   main:

@@ -1,39 +1,39 @@
-##################################################################################
-# 注意：整合了Nacos注册中心、配置中心需要把有关于spring.xxx的全部配置放到bootstrap.yml文件中，不然会报错！！！！！
-##################################################################################
-# SpringCloud Alibaba配置
-spring:
-  application:
-    name: order-nacos
-  cloud:
-    #nacos配置
-    nacos:
-      #nacos的ip:端口
-      server-addr: 192.168.184.100:7747
-      #nacos注册中心的配置
-      discovery:
-        # nacos用户名
-        username: nacos
-        # nacos密码
-        password: nacos
-        # nacos命名空间
-        namespace: public
-        # nacos的分组
-        group: DEFAULT_GROUP
-      #nacos配置中心的配置（读取nacos上指定data-id的配置文件）
-      config:
-        # 方式1：指定一个或多个读取nacos配置文件（共享，优先级“最低”）
-        # 常用于公共配置/共享配置。由于优先级最低，所以任何一种从nacos上读取配置文件的方式都会覆盖shared-configs的相同配置
-        shared-configs:
-          - data-id: nacosconfig01.yaml # 指定nacos配置文件中的data-id（也就是需要读取的nacos配置文件全名）
-            group: DEFAULT_GROUP # 指定nacos配置文件的group分组
-            refresh: true # 是否实时刷新配置（也就是说当我们修改了nacos上指定的配置文件springboot项目会立即更新被修改的内容）
-        # 方式2：指定一个或多个读取nacos配置文件（扩展，优先级大于shared-configs）
-        # 常用于当前项目的扩展/额外的配置，如果和shared-configs同时存在，会覆盖shared-configs的相同的配置！！！
-        extension-configs:
-          - data-id: nacosconfig02.yaml # 指定nacos配置文件中的data-id（也就是需要读取的nacos配置文件全名）
-            group: DEFAULT_GROUP # 指定nacos配置文件的group分组
-            refresh: true # 是否实时刷新配置（也就是说当我们修改了nacos上指定的配置文件springboot项目会立即更新被修改的内容）
-
-  main:
-    allow-bean-definition-overriding: true    #不然多个feign接口连接相同的微服务则会报错
+###################################################################################
+## 注意：整合了Nacos注册中心、配置中心需要把有关于spring.xxx的全部配置放到bootstrap.yml文件中，不然会报错！！！！！
+###################################################################################
+## SpringCloud Alibaba配置
+#spring:
+#  application:
+#    name: order-nacos
+#  cloud:
+#    #nacos配置
+#    nacos:
+#      #nacos的ip:端口
+#      server-addr: 192.168.184.100:7747
+#      #nacos注册中心的配置
+#      discovery:
+#        # nacos用户名
+#        username: nacos
+#        # nacos密码
+#        password: nacos
+#        # nacos命名空间
+#        namespace: public
+#        # nacos的分组
+#        group: DEFAULT_GROUP
+#      #nacos配置中心的配置（读取nacos上指定data-id的配置文件）
+#      config:
+#        # 方式1：指定一个或多个读取nacos配置文件（共享，优先级“最低”）
+#        # 常用于公共配置/共享配置。由于优先级最低，所以任何一种从nacos上读取配置文件的方式都会覆盖shared-configs的相同配置
+#        shared-configs:
+#          - data-id: nacosconfig01.yaml # 指定nacos配置文件中的data-id（也就是需要读取的nacos配置文件全名）
+#            group: DEFAULT_GROUP # 指定nacos配置文件的group分组
+#            refresh: true # 是否实时刷新配置（也就是说当我们修改了nacos上指定的配置文件springboot项目会立即更新被修改的内容）
+#        # 方式2：指定一个或多个读取nacos配置文件（扩展，优先级大于shared-configs）
+#        # 常用于当前项目的扩展/额外的配置，如果和shared-configs同时存在，会覆盖shared-configs的相同的配置！！！
+#        extension-configs:
+#          - data-id: nacosconfig02.yaml # 指定nacos配置文件中的data-id（也就是需要读取的nacos配置文件全名）
+#            group: DEFAULT_GROUP # 指定nacos配置文件的group分组
+#            refresh: true # 是否实时刷新配置（也就是说当我们修改了nacos上指定的配置文件springboot项目会立即更新被修改的内容）
+#
+#  main:
+#    allow-bean-definition-overriding: true    #不然多个feign接口连接相同的微服务则会报错

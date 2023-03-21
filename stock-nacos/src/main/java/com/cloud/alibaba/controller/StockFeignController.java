@@ -15,4 +15,9 @@ public class StockFeignController {
         return "helloWorld---stock-nacos--openfeign";
     }
 
+    @GetMapping(path = "/throwException")
+    public String throwException(){
+        throw new RuntimeException("throwException");
+    }
+
 }
