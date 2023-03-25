@@ -1,0 +1,168 @@
+server:
+  port: 5288
+# SpringCloud配置
+spring:
+  application:
+    name: seata-order
+    #这里我们使用的是mysql8.0的配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.184.100:3308/order_db?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 123456
+    #druid数据库连接池配置
+    druid:
+      # 初始连接数
+      initial-size: 5
+      # 最小连接池数量
+      minIdle: 5
+      # 最大连接池数量
+      max-active: 20
+      # 配置获取连接等待超时的时间(单位：毫秒)
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      max-evictable-idle-time-millis: 900000
+      # 用来测试连接是否可用的SQL语句,默认值每种数据库都不相同,这是mysql
+      validationQuery: SELECT 1
+      # 应用向连接池申请连接，并且testOnBorrow为false时，连接池将会判断连接是否处于空闲状态，如果是，则验证这条连接是否可用
+      testWhileIdle: true
+      # 如果为true，默认是false，应用向连接池申请连接时，连接池会判断这条连接是否是可用的
+      testOnBorrow: false
+      # 如果为true（默认false），当应用使用完连接，连接池回收连接的时候会判断该连接是否还可用
+      testOnReturn: false
+      # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle
+      poolPreparedStatements: true
+      # 要启用PSCache，必须配置大于0，当大于0时， poolPreparedStatements自动触发修改为true，
+      # 在Druid中，不会存在Oracle下PSCache占用内存过多的问题，
+      # 可以把这个数值配置大一些，比如说100
+      maxOpenPreparedStatements: 20
+      # 连接池中的minIdle数量以内的连接，空闲时间超过minEvictableIdleTimeMillis，则会执行keepAlive操作
+      keepAlive: true
+      # 启用内置过滤器（第一个 stat必须，否则监控不到SQL）
+      filters: stat,wall
+      # 自己配置监控统计拦截的filter
+      filter:
+        # 开启druid-datasource的状态监控
+        stat:
+          enabled: true
+          db-type: mysql
+          # 开启慢sql监控，超过1s 就认为是慢sql，记录到日志中
+          log-slow-sql: true
+          slow-sql-millis: 1000
+        # wall配置
+        wall:
+          config:
+            multi-statement-allow: true
+      #配置WebStatFilter，用于采集web关联监控的数据
+      web-stat-filter:
+        enabled: true                   # 启动 StatFilter
+      #配置StatViewServlet（监控页面），用于展示Druid的统计信息
+      stat-view-servlet:
+        enabled: true                   # 启用StatViewServlet
+        url-pattern: /druid/*           # 访问内置监控页面的路径，内置监控页面的首页是/druid/index.html
+        reset-enable: false              # 不允许清空统计数据,重新计算
+        login-username: root            # 配置监控页面访问帐号
+        login-password: 123456          # 配置监控页面访问密码
+        allow:                         # 设置IP白名单，不填则允许所有访问
+        deny:                           # IP 黑名单，若白名单也存在，则优先使用
+  cloud:
+    # nacos配置
+    nacos:
+      # nacos的ip:端口
+      server-addr: 192.168.184.100:7747
+      discovery:
+        # nacos用户名
+        username: nacos
+        # nacos密码
+        password: nacos
+        # nacos命名空间
+        namespace:
+        # nacos的分组
+        group: DEFAULT_GROUP
+  main:
+    #解决多个feign接口连接相同的微服务则会报错的问题
+    allow-bean-definition-overriding: true
+
+
+# Seata配置
+seata:
+  # 开启seata
+  enabled: true
+  application-id: ${spring.application.name}
+  # seata事务分组名（格式为: service.vgroupMapping.事务分组名（通常为SpringCloud顶层项目名-group）-group=Seata集群名）
+  # 因为我们在nacos配置中心上配置了service.vgroupMapping.springcloud-alibaba-demo-group=default
+  tx-service-group: springcloud-alibaba-demo-group
+  service:
+    vgroup-mapping:
+      # key是Seata事务分组名（springcloud-alibaba-demo-group）,value是Seata集群名（default）
+      # 格式为: service.vgroupMapping.事务分组名（通常为SpringCloud顶层项目名-group）=Seata集群名
+      # 因为我们在nacos配置中心上配置了service.vgroupMapping.springcloud-alibaba-demo-group=default
+      springcloud-alibaba-demo-group: default
+    grouplist:
+      # 集群名为"default"的Seata所在的服务器IP+Seata的服务端口(Seata可视化界面的端口是7091、服务端口是8091)
+      default: 192.168.184.100:8091
+  # 关闭自动代理
+  enable-auto-data-source-proxy: true
+  # Seata接入Nacos配置中心
+  config:
+    # 配置中心类型（nacos）
+    type: nacos
+    nacos:
+      server-addr: ${spring.cloud.nacos.server-addr}
+      # seata配置文件所在的nacos分组
+      group: SEATA_GROUP
+      # seata配置文件所在的nacos命名空间（必须为空，如果不为空会出现一些问题）
+      namespace:
+      # nacos帐号
+      username: nacos
+      # nacos密码
+      password: nacos
+      # seata在nacos配置中心上的配置文件的data-id
+      data-id: seataServer.properties
+  # Seata接入Nacos注册中心
+  registry:
+    # 注册中心类型（nacos）
+    type: nacos
+    nacos:
+      # seata服务端在nacos注册的应用名（seata 服务名）
+      application: seata-server
+      server-addr: ${spring.cloud.nacos.server-addr}
+      # seata服务端被注册到nacos哪个分组
+      group: SEATA_GROUP
+      # seata服务端被注册到nacos哪个命名空间（必须为空，如果不为空会出现一些问题）
+      namespace:
+      # seata集群名（默认为default）
+      cluster: default
+      # nacos帐号
+      username: nacos
+      # nacos密码
+      password: nacos
+
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+#设置openFeign客户端超时时间(OpenFeign默认支持ribbon)
+ribbon:
+  # 连接超时时间
+  ConnectTimeout: 3000
+  ReadTimeout: 5000
+
+# 配置openfeign日志
+logging:
+  level:
+    com.cloud.alibaba.feign: debug
+
+# 开启端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
