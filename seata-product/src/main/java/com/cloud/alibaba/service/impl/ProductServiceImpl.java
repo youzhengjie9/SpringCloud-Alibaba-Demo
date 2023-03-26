@@ -30,7 +30,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      * @return boolean
      */
     @Override
-    @GlobalTransactional(rollbackFor = Exception.class)
+    @GlobalTransactional(rollbackFor = Exception.class) //开启seata分布式事务
     public boolean buyProduct(Long productId) {
         try {
             //product数量-1
@@ -41,10 +41,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
                     .count(1)
                     .build();
             orderFeignService.generateOrder(order);
-            logger.debug("购买成功");
+            logger.info("购买成功");
             return true;
         }catch (Exception e){
-            logger.debug("购买失败,进行分布式事务回滚");
+            e.printStackTrace();
+            logger.error("购买失败,进行分布式事务回滚");
             throw new RuntimeException("购买失败,进行分布式事务回滚");
         }
 

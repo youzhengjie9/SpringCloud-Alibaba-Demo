@@ -17,12 +17,14 @@ public class ProductController {
 
     @GetMapping(path = "/buyProduct/{productId}")
     public ResponseResult<String> buyProduct(@PathVariable("productId") Long productId){
-        return productService.buyProduct(productId)?
-                ResponseResult.ok("购买成功"):ResponseResult.fail("购买失败");
+        try {
+            boolean flag = productService.buyProduct(productId);
+            if(flag){
+                return ResponseResult.ok("购买成功");
+            }
+            return ResponseResult.fail("购买失败");
+        }catch (Exception e){
+            return ResponseResult.fail("购买失败");
+        }
     }
-
-
-
-
-
 }
