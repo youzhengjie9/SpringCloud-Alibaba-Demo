@@ -1,0 +1,25 @@
+server:
+  port: 5010
+# SpringCloud配置
+spring:
+  application:
+    name: skywalking-demo
+  #springboot邮件
+  mail:
+    # qq邮箱的主机（如果是其他类型邮箱则不一样）
+    host: smtp.qq.com
+    # 端口号465或587
+    port: 587
+    # 发送者邮箱账号
+    username: 1550324080@qq.com
+    # 发送者邮箱的POP3/SMTP服务密码
+    password: mpldthzxvxkyjfhh
+    # 默认的邮件编码为UTF-8
+    default-encoding: UTF-8
+
+# 开启端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

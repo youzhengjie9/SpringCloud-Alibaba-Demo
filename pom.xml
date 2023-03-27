@@ -16,6 +16,7 @@
         <module>sentinel-gateway</module>
         <module>seata-product</module>
         <module>seata-order</module>
+        <module>skywalking-demo</module>
     </modules>
 
     <properties>
